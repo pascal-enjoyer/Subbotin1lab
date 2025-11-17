@@ -6,6 +6,7 @@ on:
     tags: [ 'v*', '*-test' ]
   pull_request:
     branches: [ dev, feature_vlad ]
+    types: [opened, synchronize, reopened]
 
 env:
   ANDROID_HOME: /opt/android-sdk
