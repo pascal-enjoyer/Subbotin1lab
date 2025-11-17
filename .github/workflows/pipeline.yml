@@ -2,7 +2,6 @@ name: Android Build
 
 on:
   push:
-    branches: [ dev, feature_vlad ] 
     tags: [ 'v*', '*-test' ]
   pull_request:
     types: [opened, synchronize, reopened]
