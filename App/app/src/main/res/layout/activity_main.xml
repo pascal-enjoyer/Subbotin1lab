@@ -23,19 +23,35 @@
         android:hint="Enter Text"
         android:textSize="20sp"
         android:padding="10dp"
-        android:inputType="text"
+        android:inputType="textMultiLine"
+        android:gravity="top"
         android:background="@drawable/et_morse" />
 
-    <TextView
-        android:id="@+id/output_text_view"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="20dp"
-        android:hint="Morse Text Result"
-        android:textSize="20sp"
-        android:padding="10dp"
-        android:textColor="@color/colorAccent" />
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/output_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"
+            android:gravity="top"
+            android:hint="Morse Text Result"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:padding="10dp"
+            android:background="@drawable/et_morse"
+            android:inputType="textMultiLine"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
+            android:longClickable="true"
+            android:scrollbars="vertical" />
+
+    </ScrollView>
 
     <Button
         android:id="@+id/translate_button"
