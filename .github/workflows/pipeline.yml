@@ -1,0 +1,42 @@
+name: Android Build
+
+on:
+  push:
+    branches: [ main, dev ]
+    tags: [ 'v*', '*-test' ]
+  pull_request:
+    branches: [ main, dev ]
+
+env:
+  ANDROID_HOME: /opt/android-sdk
+  JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+
+jobs:
+  android_build:
+    runs-on: ubuntu-latest
+    container: ghcr.io/cirruslabs/android-sdk:34
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup environment
+        run: |
+          apt-get update && apt-get install -y openjdk-17-jdk
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export PATH=$JAVA_HOME/bin:$PATH
+          cd App
+          chmod +x ./gradlew
+          export ANDROID_HOME=/opt/android-sdk
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+      
+      - name: Build APK
+        run: |
+          cd App
+          ./gradlew assembleDebug --no-daemon --stacktrace
+      
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-${{ github.sha }}
+          path: App/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
