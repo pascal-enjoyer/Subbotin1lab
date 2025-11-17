@@ -3,6 +3,8 @@ package com.example.morse_messenger;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.AdapterView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Locale;
 import android.view.View;
@@ -10,10 +12,12 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     private EditText inputEditText;
-    private EditText outputTextView; // Изменено с TextView на EditText
+    private EditText outputTextView;
     private Button translateButton;
     private Button toggleModeButton;
-    private boolean isTextToMorseMode = true; // true: текст → Морзе, false: Морзе → текст
+    private Spinner languageSpinner;
+    private boolean isTextToMorseMode = true;
+    private String currentLanguage = "en"; // en, ru
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +27,29 @@ public class MainActivity extends AppCompatActivity {
         inputEditText = findViewById(R.id.input_edit_text);
         outputTextView = findViewById(R.id.output_text_view);
         translateButton = findViewById(R.id.translate_button);
-
         toggleModeButton = findViewById(R.id.toggle_mode_button);
+        languageSpinner = findViewById(R.id.language_spinner);
 
-        // Устанавливаем начальный текст кнопки и подсказок
+        // Настройка Spinner для выбора языка
+        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0: currentLanguage = "en"; break;
+                    case 1: currentLanguage = "ru"; break;
+                }
+                // Переводим заново при смене языка в режиме "Морзе → Текст"
+                if (!isTextToMorseMode && !inputEditText.getText().toString().trim().isEmpty()) {
+                    translateFromMorse();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                currentLanguage = "en";
+            }
+        });
+
         updateUI();
 
         // Обработчик для кнопки переключения режима
@@ -35,10 +58,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isTextToMorseMode = !isTextToMorseMode;
                 updateUI();
-                // Очищаем поля при смене режима
                 inputEditText.setText("");
                 outputTextView.setText("");
-                outputTextView.setHint(isTextToMorseMode ? "Morse Text Result" : "Text Result");
             }
         });
 
@@ -51,10 +72,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void updateUI() {
         toggleModeButton.setText(isTextToMorseMode ? "Switch to Morse → Text" : "Switch to Text → Morse");
         inputEditText.setHint(isTextToMorseMode ? "Enter Text" : "Enter Morse Code");
         outputTextView.setHint(isTextToMorseMode ? "Morse Text Result" : "Text Result");
+
+        // Показываем/скрываем выбор языка
+        languageSpinner.setVisibility(isTextToMorseMode ? View.GONE : View.VISIBLE);
     }
 
     private void translateToMorse() {
@@ -83,25 +108,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         StringBuilder textResult = new StringBuilder();
-        // Разделяем входную строку на слова (разделитель - пробел или "/")
-        String[] words = inputMorse.split("\\s+|/");
-        for (String word : words) {
+
+        // Заменяем несколько пробелов подряд на один пробел
+        String normalizedMorse = inputMorse.replaceAll("\\s+", " ");
+
+        // Разделяем на слова (слово разделяется "/" или несколькими пробелами)
+        String[] words = normalizedMorse.split("/");
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i].trim();
             if (word.isEmpty()) continue;
 
-            // Разделяем слово на символы Морзе
-            String[] morseChars = word.trim().split("\\s+");
+            // Разделяем слово на отдельные символы Морзе
+            String[] morseChars = word.split(" ");
+
             for (String morseChar : morseChars) {
-                String decodedChar = morseDecodeSwitch(morseChar);
-                if (!decodedChar.isEmpty()) {
-                    textResult.append(decodedChar);
+                if (!morseChar.isEmpty()) {
+                    String decodedChar = morseDecodeWithLanguage(morseChar);
+                    if (!decodedChar.isEmpty()) {
+                        textResult.append(decodedChar);
+                    }
                 }
             }
-            // Добавляем пробел между словами
-            textResult.append(" ");
+
+            // Добавляем пробел между словами, но не после последнего слова
+            if (i < words.length - 1) {
+                textResult.append(" ");
+            }
         }
-        outputTextView.setText(textResult.toString().trim());
+
+        outputTextView.setText(textResult.toString());
     }
 
+    // Простой метод декодирования с учетом выбранного языка
+// Упрощенный метод - теперь просто вызывает morseDecodeSwitch
+    private String morseDecodeWithLanguage(String morseChar) {
+        return morseDecodeSwitch(morseChar);
+    }
+
+    // Ваши существующие методы остаются без изменений
     static String morseEncode(String x) {
         switch (x.toLowerCase(Locale.getDefault())) {
             case "a": return ".-";
@@ -196,74 +241,135 @@ public class MainActivity extends AppCompatActivity {
             default: return "";
         }
     }
-    public static String morseDecodeSwitch(String morseChar) {
-        switch (morseChar) {
-            case ".-": return "A"; // или "А"
-            case "-...": return "B"; // или "Б"
-            case "-.-.": return "C"; // или "Ц"
-            case "-..": return "D"; // или "Д"
-            case ".": return "E"; // или "Е", "Ё"
-            case "..-.": return "F"; // или "Ф"
-            case "--.": return "G"; // или "Г"
-            case "....": return "H"; // или "Х"
-            case "..": return "I"; // или "И"
-            case ".---": return "J"; // или "Й"
-            case "-.-": return "K"; // или "К"
-            case ".-..": return "L"; // или "Л"
-            case "--": return "M"; // или "М"
-            case "-.": return "N"; // или "Н"
-            case "---": return "O"; // или "О"
-            case ".--.": return "P"; // или "П"
-            case "--.-": return "Q"; // или "Щ"
-            case ".-.": return "R"; // или "Р"
-            case "...": return "S"; // или "С"
-            case "-": return "T"; // или "Т"
-            case "..-": return "U"; // или "У"
-            case "...-": return "V"; // или "Ж"
-            case ".--": return "W"; // или "В"
-            case "-..-": return "X"; // или "Ь"
-            case "-.--": return "Y"; // или "Ы"
-            case "--..": return "Z"; // или "З"
-            case "---.": return "Ч";
-            case "----": return "Ш";
-            case "--.--": return "Ъ";
-            case "..-..": return "Э"; // или "É"
-            case "..--": return "Ю"; // или "Ì", "Ù"
-            case ".-.-": return "Я";
-            case ".--.-": return "À";
-            case ".-..-": return "È";
-            case "---.-": return "Ò";
-            case "-.-..": return "Ç";
-            case "-----": return "0";
-            case ".----": return "1";
-            case "..---": return "2";
-            case "...--": return "3";
-            case "....-": return "4";
-            case ".....": return "5";
-            case "-....": return "6";
-            case "--...": return "7";
-            case "---..": return "8";
-            case "----.": return "9";
-            case "/": return " ";
-            case "--..--": return ",";
-            case ".-.-.-": return ".";
-            case "..--..": return "?";
-            case ".----.": return "'";
-            case "-.-.--": return "!";
-            case "-..-.": return "/";
-            case "-.--.": return "(";
-            case "-.--.-": return ")";
-            case ".-...": return "&";
-            case "---...": return ":";
-            case "-.-.-.": return ";";
-            case "-...-": return "=";
-            case ".-.-.": return "+";
-            case "-....-": return "-";
-            case "..--.-": return "_";
-            case ".-..-.": return "\"";
-            case "...-..-": return "$";
-            case ".--.-.": return "@";
-            default: return "";
+
+    public String morseDecodeSwitch(String morseChar) {
+        if (currentLanguage.equals("ru")) {
+            // Декодирование для русского языка
+            switch (morseChar) {
+                case ".-": return "А";
+                case "-...": return "Б";
+                case ".--": return "В";
+                case "--.": return "Г";
+                case "-..": return "Д";
+                case ".": return "Е";
+                case "...-": return "Ж";
+                case "--..": return "З";
+                case "..": return "И";
+                case ".---": return "Й";
+                case "-.-": return "К";
+                case ".-..": return "Л";
+                case "--": return "М";
+                case "-.": return "Н";
+                case "---": return "О";
+                case ".--.": return "П";
+                case ".-.": return "Р";
+                case "...": return "С";
+                case "-": return "Т";
+                case "..-": return "У";
+                case "..-.": return "Ф";
+                case "....": return "Х";
+                case "-.-.": return "Ц";
+                case "---.": return "Ч";
+                case "----": return "Ш";
+                case "--.-": return "Щ";
+                case "--.--": return "Ъ";
+                case "-.--": return "Ы";
+                case "-..-": return "Ь";
+                case "..-..": return "Э";
+                case "..--": return "Ю";
+                case ".-.-": return "Я";
+                // Цифры и символы одинаковы для всех языков
+                case "-----": return "0";
+                case ".----": return "1";
+                case "..---": return "2";
+                case "...--": return "3";
+                case "....-": return "4";
+                case ".....": return "5";
+                case "-....": return "6";
+                case "--...": return "7";
+                case "---..": return "8";
+                case "----.": return "9";
+                case "/": return " ";
+                case "--..--": return ",";
+                case ".-.-.-": return ".";
+                case "..--..": return "?";
+                case ".----.": return "'";
+                case "-.-.--": return "!";
+                case "-..-.": return "/";
+                case "-.--.": return "(";
+                case "-.--.-": return ")";
+                case ".-...": return "&";
+                case "---...": return ":";
+                case "-.-.-.": return ";";
+                case "-...-": return "=";
+                case ".-.-.": return "+";
+                case "-....-": return "-";
+                case "..--.-": return "_";
+                case ".-..-.": return "\"";
+                case "...-..-": return "$";
+                case ".--.-.": return "@";
+                default: return "";
+            }
+        } else {
+            // Декодирование для английского языка (по умолчанию)
+            switch (morseChar) {
+                case ".-": return "A";
+                case "-...": return "B";
+                case "-.-.": return "C";
+                case "-..": return "D";
+                case ".": return "E";
+                case "..-.": return "F";
+                case "--.": return "G";
+                case "....": return "H";
+                case "..": return "I";
+                case ".---": return "J";
+                case "-.-": return "K";
+                case ".-..": return "L";
+                case "--": return "M";
+                case "-.": return "N";
+                case "---": return "O";
+                case ".--.": return "P";
+                case "--.-": return "Q";
+                case ".-.": return "R";
+                case "...": return "S";
+                case "-": return "T";
+                case "..-": return "U";
+                case "...-": return "V";
+                case ".--": return "W";
+                case "-..-": return "X";
+                case "-.--": return "Y";
+                case "--..": return "Z";
+                case "-----": return "0";
+                case ".----": return "1";
+                case "..---": return "2";
+                case "...--": return "3";
+                case "....-": return "4";
+                case ".....": return "5";
+                case "-....": return "6";
+                case "--...": return "7";
+                case "---..": return "8";
+                case "----.": return "9";
+                case "/": return " ";
+                case "--..--": return ",";
+                case ".-.-.-": return ".";
+                case "..--..": return "?";
+                case ".----.": return "'";
+                case "-.-.--": return "!";
+                case "-..-.": return "/";
+                case "-.--.": return "(";
+                case "-.--.-": return ")";
+                case ".-...": return "&";
+                case "---...": return ":";
+                case "-.-.-.": return ";";
+                case "-...-": return "=";
+                case ".-.-.": return "+";
+                case "-....-": return "-";
+                case "..--.-": return "_";
+                case ".-..-.": return "\"";
+                case "...-..-": return "$";
+                case ".--.-.": return "@";
+                default: return "";
+            }
         }
     }
 }
