@@ -2,8 +2,10 @@ name: Android Build
 
 on:
   push:
-    branches: [ feature_danil]
+    branches: [ feature_vlad ]
     tags: [ 'v*', '*-test' ]
+  pull_request:
+    branches: [ feature_vlad ]
 
 env:
   ANDROID_HOME: /opt/android-sdk
@@ -13,10 +15,33 @@ jobs:
   android_build:
     runs-on: ubuntu-latest
     container: ghcr.io/cirruslabs/android-sdk:34
+
+    permissions:
+      contents: read
+      pull-requests: read   # Для того, чтобы через API читать PR
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
+        # Python + script
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run GitHub checks (members + PR size)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python PyScripts/pyChecks_CI.py
+
+        # Android build
       - name: Setup environment
         run: |
           apt-get update && apt-get install -y openjdk-17-jdk
