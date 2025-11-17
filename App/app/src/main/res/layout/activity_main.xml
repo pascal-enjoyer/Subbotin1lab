@@ -6,13 +6,47 @@
     android:padding="16dp"
     android:background="@color/colorBackground">
 
-    <TextView
+    <Button
+        android:id="@+id/toggle_mode_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="Switch to Morse → Text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="16dp"
-        android:text="Supported languages: RU, EN"
-        android:textSize="16sp"
-        android:textColor="@color/colorAccent" />
+        android:gravity="center_vertical"
+        android:background="@drawable/et_morse"
+        android:padding="12dp"
+        android:minHeight="75dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Decode language:"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp" />
+
+        <Spinner
+            android:id="@+id/language_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:minHeight="48dp"
+            android:minWidth="120dp"
+            android:entries="@array/language_options"
+            android:background="@android:drawable/btn_dropdown"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:gravity="center_vertical" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/input_edit_text"
@@ -21,17 +55,25 @@
         android:layout_weight="1"
         android:layout_marginTop="16dp"
         android:hint="Enter Text"
+        android:textColor="@android:color/black"
         android:textSize="20sp"
         android:padding="10dp"
         android:inputType="textMultiLine"
         android:gravity="top"
         android:background="@drawable/et_morse" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/black" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="8dp">
 
         <EditText
             android:id="@+id/output_text_view"
@@ -41,15 +83,16 @@
             android:gravity="top"
             android:hint="Morse Text Result"
             android:textSize="24sp"
-            android:textColor="#000000"
+            android:textColor="@android:color/black"
             android:padding="10dp"
             android:background="@drawable/et_morse"
             android:inputType="textMultiLine"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:cursorVisible="false"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:cursorVisible="true"
             android:longClickable="true"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            android:textIsSelectable="true" />
 
     </ScrollView>
 
