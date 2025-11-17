@@ -141,13 +141,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Простой метод декодирования с учетом выбранного языка
-// Упрощенный метод - теперь просто вызывает morseDecodeSwitch
     private String morseDecodeWithLanguage(String morseChar) {
-        return morseDecodeSwitch(morseChar);
+        return morseDecodeSwitch(morseChar, currentLanguage);
     }
 
-    // Ваши существующие методы остаются без изменений
-    static String morseEncode(String x) {
+    // Статический метод для кодирования (для тестов)
+    public static String morseEncode(String x) {
         switch (x.toLowerCase(Locale.getDefault())) {
             case "a": return ".-";
             case "b": return "-...";
@@ -242,8 +241,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Нестатический метод для использования в Activity
     public String morseDecodeSwitch(String morseChar) {
-        if (currentLanguage.equals("ru")) {
+        return morseDecodeSwitch(morseChar, currentLanguage);
+    }
+
+    // Статический метод для тестов с параметром языка
+    public static String morseDecodeSwitch(String morseChar, String language) {
+        if (language.equals("ru")) {
             // Декодирование для русского языка
             switch (morseChar) {
                 case ".-": return "А";
