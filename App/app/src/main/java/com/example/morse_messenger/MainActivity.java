@@ -3,14 +3,13 @@ package com.example.morse_messenger;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText inputEditText;
-    private TextView outputTextView;
+    private EditText outputTextView; // Изменено с TextView на EditText
     private Button translateButton;
 
     @Override
