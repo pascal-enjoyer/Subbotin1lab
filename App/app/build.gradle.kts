@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("checkstyle")
 }
 
 android {
@@ -44,4 +45,11 @@ checkstyle {
     configFile = rootProject.file("config/checkstyle/checkstyle.xml")
     isIgnoreFailures = false
     maxWarnings = 0
+}
+
+tasks.withType<com.puppycrawl.tools.checkstyle.CheckstyleTask>().configureEach {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
