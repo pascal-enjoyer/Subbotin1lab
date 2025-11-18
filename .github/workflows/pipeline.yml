@@ -18,8 +18,8 @@ jobs:
     container: ghcr.io/cirruslabs/android-sdk:34
 
     permissions:
-      contents: read
-      pull-requests: read   # Для того, чтобы через API читать PR
+      contents: write
+      pull-requests: write   # Для того, чтобы через API читать PR
       
     steps:
       - name: Checkout code
@@ -40,6 +40,15 @@ jobs:
         run: |
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
+        
+        #upd
+      - name: Update epic description
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          . venv/bin/activate
+          python PyScripts/epicDescriptionUpdate.py
 
       # Android build
       - name: Setup environment
