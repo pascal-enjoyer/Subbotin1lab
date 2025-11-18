@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
@@ -40,10 +39,11 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 }
 
-// Checkstyle configuration for app module
-checkstyle {
+apply(plugin = "checkstyle")
+
+configure<CheckstyleExtension> {
     toolVersion = "10.12.1"
-    config = resources.text.fromUri("https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resources/google_checks.xml")
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
     isIgnoreFailures = false
 }
 

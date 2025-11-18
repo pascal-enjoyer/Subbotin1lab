@@ -1,7 +1,6 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
-    id("checkstyle") version "10.12.1" apply false
+    id("checkstyle") apply false  // Убрана версия
 }
 
 subprojects {
