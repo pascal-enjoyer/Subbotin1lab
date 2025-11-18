@@ -28,6 +28,7 @@ jobs:
       - name: Run Checkstyle
         run: |
           cd App
+          chmod +x ./gradlew
           ./gradlew checkstyleMain --no-daemon --stacktrace --continue
       
       - name: Upload Checkstyle Report
