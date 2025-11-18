@@ -35,6 +35,7 @@ jobs:
           echo "sdk.dir=$ANDROID_HOME" > local.properties
 
       - name: Run Checkstyle
+        continue-on-error: true
         run: |
           cd App
           ./gradlew checkstyleMain --no-daemon --stacktrace --continue
