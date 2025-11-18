@@ -52,7 +52,6 @@ def list_child_prs(api_url: str, owner: str, repo: str, epic_branch: str) -> Lis
         sys.exit(1)
 
     prs = resp.json()
-    # можно дополнительно отфильтровать только feature/* при желании
     return prs
 
 

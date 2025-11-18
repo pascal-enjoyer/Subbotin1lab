@@ -4,7 +4,7 @@ on:
   push:
     tags: [ 'v*', '*-test' ]
   pull_request:
-    branches: [ dev, feature_vlad ]
+    branches: [ 'epic/**' ]
     types: [opened, synchronize, reopened]
 
 env:
@@ -17,9 +17,8 @@ jobs:
     container: ghcr.io/cirruslabs/android-sdk:34
 
     permissions:
-      contents: read
-      pull-requests: read   # Для того, чтобы через API читать PR
-      
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,14 +40,14 @@ jobs:
         run: |
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
-          
+
       - name: Update epic description
         if: github.event_name == 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           . venv/bin/activate
-          python PyScripts/epic_sync.py
+          python PyScripts/epicDescriptionUpdate.py
 
         # Android build
       - name: Setup environment
@@ -108,3 +107,5 @@ jobs:
           prerelease: ${{ contains(github.ref, '-test') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # task 2 -> big task
