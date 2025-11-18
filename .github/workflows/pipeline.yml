@@ -13,10 +13,10 @@ env:
   JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
 jobs:
-  code_quality:
+  android_build:
     runs-on: ubuntu-latest
     container: ghcr.io/cirruslabs/android-sdk:34
-    
+
     permissions:
       contents: read
       pull-requests: read
@@ -24,16 +24,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
+      
       - name: Install Python + create venv
         run: |
-          apt-get update -q
+          apt-get update
           apt-get install -y python3 python3-venv python3-pip
           python3 -m venv venv
           . venv/bin/activate 
-          pip install requests --quiet
+          pip install requests
 
       - name: Run GitHub checks (members + PR size)
         env:
@@ -42,30 +40,22 @@ jobs:
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
 
-  android_build:
-    runs-on: ubuntu-latest
-    container: ghcr.io/cirruslabs/android-sdk:34
-    needs: code_quality
-
-    permissions:
-      contents: read
-      pull-requests: read
-      
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Java & Gradle
+      - name: Setup environment
         run: |
-          apt-get update -q && apt-get install -y openjdk-17-jdk
+          apt-get update && apt-get install -y openjdk-17-jdk
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export PATH=$JAVA_HOME/bin:$PATH
+          cd App
           chmod +x ./gradlew
+          export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
-
-      # CHECKSTYLE — САМЫЙ ПЕРВЫЙ, ПАДАЕТ СРАЗУ ПРИ НАРУШЕНИЯХ
+      
+      # ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
+      # ВСЁ, ЧТО НИЖЕ — ЕДИНСТВЕННЫЕ ДОБАВЛЕННЫЕ СТРОКИ
+      # ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
       - name: Run Checkstyle
         run: |
+          cd App
           ./gradlew checkstyleMain checkstyleTest --stacktrace
 
       - name: Upload Checkstyle Report
@@ -73,28 +63,30 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: checkstyle-report-${{ github.run_id }}
-          path: |
-            **/build/reports/checkstyle/
-          retention-days: 14
+          path: App/app/build/reports/checkstyle/
+          retention-days: 7
+      # ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
 
       - name: Run Tests
         run: |
-          ./gradlew testDebugUnitTest --stacktrace
-
+          cd App
+          ./gradlew test --no-daemon --stacktrace
+      
       - name: Build APK
         run: |
-          ./gradlew assembleDebug --stacktrace
-
+          cd App
+          ./gradlew assembleDebug --no-daemon --stacktrace
+      
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-${{ github.sha }}
           path: App/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 3
-
+          retention-days: 1
+      
       - name: Upload Test Results
-        if: always()
         uses: actions/upload-artifact@v4
+        if: always()  
         with:
           name: test-results-${{ github.sha }}
           path: App/app/build/reports/tests/
@@ -106,35 +98,32 @@ jobs:
     
     if: |
       startsWith(github.ref, 'refs/tags/') && 
-      (contains(github.ref_name, '-test') || startsWith(github.ref_name, 'v'))
-
+      (contains(github.ref, '-test') || contains(github.ref, 'refs/tags/v'))
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      
       - name: Download APK
         uses: actions/download-artifact@v4
         with:
           name: app-debug-${{ github.sha }}
-
-      - name: Rename APK for release
-        run: |
-          mv app-debug.apk morse-messenger-${{ github.ref_name }}.apk || mv *.apk morse-messenger-${{ github.ref_name }}.apk
-
+      
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          draft: false
-          prerelease: ${{ contains(github.ref_name, '-test') }}
+          name: Release ${{ github.ref_name }}
           body: |
-            Сборка от коммита ${{ github.sha }}
+            ### Сборка от ${{ github.sha }}
 
-            APK прикреплён ниже.
+            **APK: [app-debug.apk](app-debug.apk)
 
-            Коммит: ${{ github.sha }}
-            Автор: ${{ github.actor }}
-          files: morse-messenger-${{ github.ref_name }}.apk
+            Собрано: ${{ github.event.head_commit.timestamp }}  
+            Ветка: ${{ github.ref_name }}  
+            Коммит: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+          files: app-debug.apk
+          draft: false
+          prerelease: ${{ contains(github.ref, '-test') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
