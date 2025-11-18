@@ -29,7 +29,6 @@ jobs:
         continue-on-error: true    # не ломает пайплайн
         run: |
           cd App
-          chmod +x ./gradlew
           ./gradlew checkstyleMain --no-daemon --stacktrace
 
       - name: Install Python + create venv
