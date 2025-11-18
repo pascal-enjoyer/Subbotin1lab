@@ -207,10 +207,10 @@ def _print_and_validate_pr(pr_data: dict, pr_number):
 
     print(
         f"\nPR size check:\n"
-        f"PR #{pr_number}: {pr_data.get('title')}\n"
-        f"Additions: {additions}, deletions: {deletions}, "
+        f"-PR #{pr_number}: {pr_data.get('title')}\n"
+        f"-Additions: {additions}, deletions: {deletions}, "
         f"total changed lines: {changed_lines}\n"
-        f"Type: {pr_type}, limit: {limit}"
+        f"-Type: {pr_type}, limit: {limit}"
     )
 
     if changed_lines > limit:
