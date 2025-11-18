@@ -17,8 +17,8 @@ jobs:
     container: ghcr.io/cirruslabs/android-sdk:34
 
     permissions:
-      contents: read
-      pull-requests: read   # Для того, чтобы через API читать PR
+      contents: write
+      pull-requests: write   # Для того, чтобы через API читать и записывать PR
       
     steps:
       - name: Checkout code
