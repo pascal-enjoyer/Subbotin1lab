@@ -39,3 +39,18 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+
+// Checkstyle configuration for app module
+checkstyle {
+    toolVersion = "10.12.1"
+    config = resources.text.fromUri("https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resources/google_checks.xml")
+    isIgnoreFailures = false
+}
+
+tasks.register<Checkstyle>("checkstyle") {
+    group = "verification"
+    description = "Run checkstyle on main source set"
+    source = fileTree("src/main/java")
+    include("**/*.java")
+    classpath = files()
+}
