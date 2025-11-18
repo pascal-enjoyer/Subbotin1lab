@@ -4,7 +4,7 @@ on:
   push:
     tags: [ 'v*', '*-test' ]
   pull_request:
-    branches: [ dev, feature_vlad ]
+    branches: [ 'epic/**' ]
     types: [opened, synchronize, reopened]
 
 env:
