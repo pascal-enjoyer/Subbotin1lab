@@ -51,9 +51,7 @@ jobs:
           echo "sdk.dir=$ANDROID_HOME" > local.properties
       
       - name: Run Checkstyle
-        run: |
-          cd App
-          ./gradlew :app:checkstyleMain --no-daemon --stacktrace
+        run: ./gradlew checkstyle --no-daemon --stacktrace
       
       - name: Upload Checkstyle report
         uses: actions/upload-artifact@v4
