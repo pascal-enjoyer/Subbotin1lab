@@ -35,8 +35,10 @@
 2. Выполнил Pull Request, в котором изменения из рабочей ветки feature_vlad были успешно слиты в основную ветку разработки dev.
 PR прошёл проверку, автоматический пайплайн успешно отработал, после чего ветка feature_vlad была безопасно объединена с dev.
 <img width="699" height="624" alt="image" src="https://github.com/user-attachments/assets/1e690e62-23df-406e-a089-389fdadf5831" />
+PR не прошел проверку.
+<img width="729" height="647" alt="image" src="https://github.com/user-attachments/assets/c183cfed-bab0-4547-8337-8e98d1981479" />
 
-3. Добавил Python-скрипты, предназначенные для автоматизации проверки репозитория в GitHub Actions.
+4. Добавил Python-скрипты, предназначенные для автоматизации проверки репозитория в GitHub Actions.
 Скрипт для вывода участников репозитория:
 -Разработан модуль, который через GitHub API автоматически получает:
     список collaborators,
@@ -48,5 +50,18 @@ PR прошёл проверку, автоматический пайплайн 
 
 - Тимофей
 
+
+
+
+--- Работа пайплайна ---
+1. Вывод участников  
+<img width="1268" height="643" alt="image" src="https://github.com/user-attachments/assets/20682342-c79b-4976-9165-1b9be3ac5e76" />
+2. Билд проекта
+<img width="331" height="487" alt="image" src="https://github.com/user-attachments/assets/2679c4eb-382b-4165-baf7-4401886b855c" />
+3. Выполнение тестов в проекте
+<img width="943" height="614" alt="image" src="https://github.com/user-attachments/assets/55dd7cf1-a7fa-43a4-9dcc-faeff0bb0660" />
+4. Публикация сборки
+<img width="833" height="428" alt="image" src="https://github.com/user-attachments/assets/0d360809-17cc-45d7-8084-61ffbb39d72b" />
+<img width="1456" height="609" alt="image" src="https://github.com/user-attachments/assets/79eca723-45bf-4212-ac43-48a322d22b65" />
 
 
