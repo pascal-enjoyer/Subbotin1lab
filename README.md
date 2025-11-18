@@ -61,7 +61,7 @@
 
 ### 👨‍💻 Батин Владислав
 
-1. **Автоматический перевод текста (auto-translate)**
+1. **Автоматический перевод текста**
    - Добавил новую функциональность: автоматический перевод текста в азбуку Морзе и обратно **в режиме реального времени**, без необходимости нажимать кнопку *Translate*.  
    ![Auto translate](https://github.com/user-attachments/assets/5c34a827-96e4-40e0-813e-6493ae1b7a91)
 
@@ -109,18 +109,27 @@
 ---
 
 ### 👨‍💻 Баженов Тимофей
+1. **Добавил изменения:**
+   - Поддержка русско-английского декодирования Морзе
+   - Переработка интерфейса
+   - Улучшенная логика перевода
+   - Оптимизация кода
+   ![КCommit](https://github.com/user-attachments/assets/506485e6-52ed-48fa-9e94-c552afb43c19)
+2. **Интеграция изменений в dev**
+   - Выполнил merge ветки `feature_timofey` в ветку `dev`. 
+   ![PR feature_timofey → dev](https://github.com/user-attachments/assets/f116634a-b70a-4b3d-b7ae-7f61dce59880)
+3. **Добавил юнит-тесты**
+   - ![Unit-tests](https://github.com/user-attachments/assets/0ca07fbc-d524-48e7-baa5-43e39e2b1b26)
 
 ---
 
---- Работа пайплайна ---
-- 1. Вывод участников  
-<img width="1268" height="643" alt="image" src="https://github.com/user-attachments/assets/20682342-c79b-4976-9165-1b9be3ac5e76" />
-- 2. Билд проекта
-<img width="331" height="487" alt="image" src="https://github.com/user-attachments/assets/2679c4eb-382b-4165-baf7-4401886b855c" />
-- 3. Выполнение тестов в проекте
-<img width="943" height="614" alt="image" src="https://github.com/user-attachments/assets/55dd7cf1-a7fa-43a4-9dcc-faeff0bb0660" />
-- 4. Публикация сборки
-<img width="833" height="428" alt="image" src="https://github.com/user-attachments/assets/0d360809-17cc-45d7-8084-61ffbb39d72b" />
-<img width="1456" height="609" alt="image" src="https://github.com/user-attachments/assets/79eca723-45bf-4212-ac43-48a322d22b65" />
+### Работа пайплайна 
+![Pipeline}(https://github.com/user-attachments/assets/bc172ccc-43d9-4dc0-a8b1-a3e549ba2c13)
+1. android_build
+- 1
+- 2
+- 3
+- 4
+2. release_apk
 
 
