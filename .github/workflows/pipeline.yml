@@ -25,6 +25,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Run Checkstyle
+        continue-on-error: true    # не ломает пайплайн
+        run: |
+          cd App
+          ./gradlew checkstyleMain --no-daemon --stacktrace
+
       - name: Install Python + create venv
         run: |
           python3 -m venv venv
