@@ -40,56 +40,25 @@ jobs:
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
 
-
-  checkstyle:
-    runs-on: ubuntu-latest
-    container: ghcr.io/cirruslabs/android-sdk:34
-    needs: code_quality
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Make gradlew executable
-        run: |
-          cd App
-          chmod +x ./gradlew
-
-      - name: Create local.properties
-        run: |
-          echo "sdk.dir=$ANDROID_HOME" > App/local.properties
-
-      - name: Run Checkstyle
-        run: |
-          cd App
-          ./gradlew checkstyleMain --no-daemon --stacktrace
-          # если хочешь проверять и тесты — раскомментируй строку ниже
-          # ./gradlew checkstyleTest --no-daemon
-
-      - name: Upload Checkstyle report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: checkstyle-report-${{ github.sha }}
-          path: |
-            App/app/build/reports/checkstyle/*.html
-            App/app/build/reports/checkstyle/*.xml
-          retention-days: 7
-
-
+      
+      
   android_build:
     runs-on: ubuntu-latest
     container: ghcr.io/cirruslabs/android-sdk:34
-    needs: [code_quality, checkstyle]   # теперь ждёт и Checkstyle
+    needs: code_quality
 
     permissions:
       contents: read
       pull-requests: read
       
     steps:
+      # ИСПРАВЛЕННЫЙ CHECKOUT — теперь с полной историей (это часто решает баги Checkstyle)
       - name: Checkout code
         uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0        # обязательно для нормальной работы Checkstyle и git-based плагинов
+          submodules: recursive # на всякий случай
+
       - name: Setup environment
         run: |
           apt-get update && apt-get install -y openjdk-17-jdk
@@ -97,8 +66,15 @@ jobs:
           export PATH=$JAVA_HOME/bin:$PATH
           cd App
           chmod +x ./gradlew
+          export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
       
+      # ДОБАВЛЯЕМ ЭТОТ ШАГ — и Checkstyle сразу заработает и будет падать при ошибках
+      - name: Run Checkstyle
+        run: |
+          cd App
+          ./gradlew checkstyleMain checkstyleTest --stacktrace
+
       - name: Run Tests
         run: |
           cd App
@@ -109,6 +85,15 @@ jobs:
           cd App
           ./gradlew assembleDebug --no-daemon --stacktrace
       
+      # Опционально: заливаем отчёт, чтобы видеть что нашёл Checkstyle
+      - name: Upload Checkstyle report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkstyle-report-${{ github.run_id }}
+          path: App/app/build/reports/checkstyle/
+          retention-days: 7
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
@@ -123,7 +108,6 @@ jobs:
           name: test-results-${{ github.sha }}
           path: App/app/build/reports/tests/
           retention-days: 7
-
 
   release_apk:
     runs-on: ubuntu-latest

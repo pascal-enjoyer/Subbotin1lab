@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.checkstyle)
 }
 
 android {
@@ -46,11 +47,7 @@ checkstyle {
     isShowViolations = true
 }
 
-tasks.named("check") {
-    dependsOn(tasks.withType<com.puppycrawl.tools.checkstyle.CheckStyleTask>())
-}
-
-tasks.withType<com.puppycrawl.tools.checkstyle.CheckStyleTask>().configureEach {
+tasks.withType<com.puppycrawl.tools.checkstyle.CheckstyleTask>().configureEach {
     reports {
         xml.required.set(true)
         html.required.set(true)
