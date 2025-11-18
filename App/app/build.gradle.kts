@@ -39,17 +39,19 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 }
 
+// Checkstyle configuration for app module
 apply(plugin = "checkstyle")
 
 configure<CheckstyleExtension> {
     toolVersion = "10.12.1"
-    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+    configFile = file("config/checkstyle/checkstyle.xml")
     isIgnoreFailures = false
 }
 
 tasks.register<Checkstyle>("checkstyle") {
     group = "verification"
     description = "Run checkstyle on main source set"
+    configFile = file("config/checkstyle/checkstyle.xml")
     source = fileTree("src/main/java")
     include("**/*.java")
     classpath = files()
