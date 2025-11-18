@@ -124,7 +124,8 @@
 ---
 
 ### Работа пайплайна 
-![Pipeline}(https://github.com/user-attachments/assets/bc172ccc-43d9-4dc0-a8b1-a3e549ba2c13)
+![Pipeline}(https://github.com/user-attachments/assets/6f1a08bf-d18b-42ef-a563-786478f5cde6)
+)
 1. android_build
 - 1
 - 2
