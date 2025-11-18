@@ -27,11 +27,14 @@ jobs:
 
       - name: Setup environment
         run: |
+          apt-get update && apt-get install -y openjdk-17-jdk
+          export PATH=$JAVA_HOME/bin:$PATH
           cd App
           chmod +x ./gradlew
+          export ANDROID_HOME=/opt/android-sdk
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
 
       - name: Run Checkstyle
-        continue-on-error: true
         run: |
           cd App
           ./gradlew checkstyleMain --no-daemon --stacktrace --continue
@@ -47,10 +50,12 @@ jobs:
             App/app/build/reports/checkstyle/*.xml
           retention-days: 7
           
-      - name: Install Python deps
+      - name: Install Python + create venv
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install requests
+          python3 -m venv venv
+          . venv/bin/activate
+          pip install --upgrade pip
+          pip install requests
 
       - name: Run GitHub checks (members + PR size)
         env:
