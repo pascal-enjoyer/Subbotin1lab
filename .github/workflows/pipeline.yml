@@ -50,22 +50,32 @@ jobs:
           export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
       
-      # ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
-      # ВСЁ, ЧТО НИЖЕ — ЕДИНСТВЕННЫЕ ДОБАВЛЕННЫЕ СТРОКИ
-      # ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
+      - name: Validate Checkstyle configuration
+        run: |
+          cd App
+          ./gradlew tasks --group "verification" | grep checkstyle || echo "No checkstyle tasks found"
+      
       - name: Run Checkstyle
         run: |
           cd App
-          ./gradlew checkstyleMain checkstyleTest --stacktrace
-
+          ./gradlew checkstyleAll --no-daemon --stacktrace --continue
+      
       - name: Upload Checkstyle Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: checkstyle-report-${{ github.run_id }}
-          path: App/app/build/reports/checkstyle/
+          name: checkstyle-report
+          path: |
+            App/app/build/reports/checkstyle/
+            App/app/build/reports/checkstyle/*.html
+            App/app/build/reports/checkstyle/*.xml
           retention-days: 7
-      # ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
+
+      - name: Check Checkstyle results
+        if: always()
+        run: |
+          echo "Checkstyle execution completed"
+          echo "Reports available in artifacts"
 
       - name: Run Tests
         run: |
