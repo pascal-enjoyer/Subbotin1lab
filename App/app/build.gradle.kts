@@ -46,10 +46,3 @@ checkstyle {
     isIgnoreFailures = false
     maxWarnings = 0
 }
-
-tasks.withType<com.puppycrawl.tools.checkstyle.CheckstyleTask>().configureEach {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
-}
