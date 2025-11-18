@@ -47,7 +47,7 @@ checkstyle {
     isShowViolations = true
 }
 
-tasks.withType<com.puppycrawl.tools.checkstyle.CheckstyleTask>().configureEach {
+tasks.withType<org.gradle.api.plugins.quality.Checkstyle>().configureEach {
     reports {
         xml.required.set(true)
         html.required.set(true)
