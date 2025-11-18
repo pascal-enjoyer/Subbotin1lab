@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Locale;
 import android.view.View;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +54,29 @@ public class MainActivity extends AppCompatActivity {
 
         updateUI();
 
+        // Автоперевод при вводе текста
+        inputEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // не нужно
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // каждый раз, когда пользователь что-то ввёл/стер
+                if (isTextToMorseMode) {
+                    translateToMorse();
+                } else {
+                    translateFromMorse();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // не нужно
+            }
+        });
+        
         // Обработчик для кнопки переключения режима
         toggleModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
