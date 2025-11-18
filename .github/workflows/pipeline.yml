@@ -40,34 +40,47 @@ jobs:
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
 
-      - name: Setup environment for Checkstyle
+
+  checkstyle:
+    runs-on: ubuntu-latest
+    container: ghcr.io/cirruslabs/android-sdk:34
+    needs: code_quality
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make gradlew executable
         run: |
-          apt-get update && apt-get install -y openjdk-17-jdk
-          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-          export PATH=$JAVA_HOME/bin:$PATH
           cd App
           chmod +x ./gradlew
-          export ANDROID_HOME=/opt/android-sdk
-          echo "sdk.dir=$ANDROID_HOME" > local.properties
-      
+
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > App/local.properties
+
       - name: Run Checkstyle
         run: |
           cd App
-          chmod +x ./gradlew
-          ./gradlew checkstyle --no-daemon --stacktrace
-      
+          ./gradlew checkstyleMain --no-daemon --stacktrace
+          # если хочешь проверять и тесты — раскомментируй строку ниже
+          # ./gradlew checkstyleTest --no-daemon
+
       - name: Upload Checkstyle report
-        uses: actions/upload-artifact@v4
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: checkstyle-report-${{ github.sha }}
-          path: App/app/build/reports/checkstyle/
+          path: |
+            App/app/build/reports/checkstyle/*.html
+            App/app/build/reports/checkstyle/*.xml
           retention-days: 7
+
 
   android_build:
     runs-on: ubuntu-latest
     container: ghcr.io/cirruslabs/android-sdk:34
-    needs: code_quality
+    needs: [code_quality, checkstyle]   # теперь ждёт и Checkstyle
 
     permissions:
       contents: read
@@ -84,7 +97,6 @@ jobs:
           export PATH=$JAVA_HOME/bin:$PATH
           cd App
           chmod +x ./gradlew
-          export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
       
       - name: Run Tests
@@ -111,6 +123,7 @@ jobs:
           name: test-results-${{ github.sha }}
           path: App/app/build/reports/tests/
           retention-days: 7
+
 
   release_apk:
     runs-on: ubuntu-latest

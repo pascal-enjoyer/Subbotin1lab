@@ -5,7 +5,7 @@ junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 appcompat = "1.7.1"
 material = "1.13.0"
-checkstyle = "10.12.1"
+checkstyle = "10.20.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -13,9 +13,8 @@ ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitV
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-checkstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-checkstyle = { id = "checkstyle", version.ref = "checkstyle" }
+checkstyle = { id = "com.puppycrawl.tools.checkstyle", version.ref = "checkstyle" }
 

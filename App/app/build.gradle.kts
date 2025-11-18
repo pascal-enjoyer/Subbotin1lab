@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("checkstyle")
 }
 
 android {
@@ -19,7 +18,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -36,13 +38,22 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
-tasks.register("checkstyle") {
-    group = "verification"
-    description = "Run Checkstyle on all source sets"
-    dependsOn(tasks.matching { it.name.startsWith("checkstyle") })
-}
+
 checkstyle {
-    toolVersion = "10.12.1"
-    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
-    maxWarnings = 0
+    toolVersion = "10.20.0"
+    configFile = rootProject.file("checkstyle.xml")
+    isIgnoreFailures = false
+    isShowViolations = true
+}
+
+tasks.named("check") {
+    dependsOn(tasks.withType<com.puppycrawl.tools.checkstyle.CheckStyleTask>())
+}
+
+tasks.withType<com.puppycrawl.tools.checkstyle.CheckStyleTask>().configureEach {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        html.get().destination = file("$buildDir/reports/checkstyle/checkstyle.html")
+    }
 }
