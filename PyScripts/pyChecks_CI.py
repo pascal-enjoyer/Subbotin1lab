@@ -229,7 +229,7 @@ def main():
 
     # PR checks
     check_pr_size_ci() # CI
-    check_pr_size_local( ) # Локально
+    #check_pr_size_local( ) # Локально
 
 
 if __name__ == "__main__":
