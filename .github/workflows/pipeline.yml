@@ -41,7 +41,7 @@ jobs:
         run: |
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
-          
+
       - name: Update epic description
         if: github.event_name == 'pull_request'
         env:
@@ -108,3 +108,5 @@ jobs:
           prerelease: ${{ contains(github.ref, '-test') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # task 1 -> big task
