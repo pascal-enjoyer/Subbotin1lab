@@ -51,6 +51,8 @@ tasks.withType<org.gradle.api.plugins.quality.Checkstyle>().configureEach {
     reports {
         xml.required.set(true)
         html.required.set(true)
-        html.get().destination = file("$buildDir/reports/checkstyle/checkstyle.html")
+        html.get().outputLocation.set(
+            file("${project.buildDir}/reports/checkstyle/checkstyle.html")
+        )
     }
 }
