@@ -41,6 +41,14 @@ jobs:
         run: |
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
+          
+      - name: Update epic description
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          . venv/bin/activate
+          python PyScripts/epic_sync.py
 
         # Android build
       - name: Setup environment
