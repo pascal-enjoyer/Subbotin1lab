@@ -48,7 +48,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           . venv/bin/activate
-          python PyScripts/epic_sync.py
+          python PyScripts/epicDecriptionUpdate.py
 
         # Android build
       - name: Setup environment
