@@ -36,7 +36,11 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
-
+tasks.register("checkstyle") {
+    group = "verification"
+    description = "Run Checkstyle on all source sets"
+    dependsOn(tasks.matching { it.name.startsWith("checkstyle") })
+}
 checkstyle {
     toolVersion = "10.12.1"
     configFile = rootProject.file("config/checkstyle/checkstyle.xml")
