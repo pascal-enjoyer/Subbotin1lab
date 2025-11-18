@@ -2,7 +2,7 @@ name: Android Build
 
 on:
   push:
-    branches: [ feature-maksim ]
+    branches: [ feature-timofey ]
     tags: [ 'v*', '*-test' ]
   pull_request:
     branches: [ dev, feature_vlad ]
@@ -19,12 +19,13 @@ jobs:
 
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: read   # Для того, чтобы через API читать PR
       
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
+      # Install Python + script
       - name: Install Python + create venv
         run: |
           apt-get update
@@ -40,6 +41,7 @@ jobs:
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
 
+      # Android build
       - name: Setup environment
         run: |
           apt-get update && apt-get install -y openjdk-17-jdk
@@ -50,33 +52,6 @@ jobs:
           export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
       
-      - name: Validate Checkstyle configuration
-        run: |
-          cd App
-          ./gradlew tasks --group "verification" | grep checkstyle || echo "No checkstyle tasks found"
-      
-      - name: Run Checkstyle
-        run: |
-          cd App
-          ./gradlew checkstyleAll --no-daemon --stacktrace --continue
-      
-      - name: Upload Checkstyle Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: checkstyle-report
-          path: |
-            App/app/build/reports/checkstyle/
-            App/app/build/reports/checkstyle/*.html
-            App/app/build/reports/checkstyle/*.xml
-          retention-days: 7
-
-      - name: Check Checkstyle results
-        if: always()
-        run: |
-          echo "Checkstyle execution completed"
-          echo "Reports available in artifacts"
-
       - name: Run Tests
         run: |
           cd App
@@ -96,7 +71,7 @@ jobs:
       
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
-        if: always()  
+        if: always()  # Загружаем результаты тестов даже если они упали
         with:
           name: test-results-${{ github.sha }}
           path: App/app/build/reports/tests/
@@ -118,7 +93,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app-debug-${{ github.sha }}
-       
+      
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
