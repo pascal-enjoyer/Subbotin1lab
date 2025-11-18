@@ -53,7 +53,7 @@ jobs:
       - name: Run Checkstyle
         run: |
           cd App
-          ./gradlew checkstyleMain --no-daemon --stacktrace
+          ./gradlew :app:checkstyleMain --no-daemon --stacktrace
       
       - name: Upload Checkstyle report
         uses: actions/upload-artifact@v4
