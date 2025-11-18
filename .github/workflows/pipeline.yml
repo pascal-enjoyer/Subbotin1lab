@@ -2,7 +2,7 @@ name: Android Build
 
 on:
   push:
-    branches: [ feature-timofey ]
+    branches: [ feature-maksim ]
     tags: [ 'v*', '*-test' ]
   pull_request:
     branches: [ dev, feature_vlad ]
@@ -13,19 +13,18 @@ env:
   JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
 jobs:
-  android_build:
+  code_quality:
     runs-on: ubuntu-latest
     container: ghcr.io/cirruslabs/android-sdk:34
-
+    
     permissions:
       contents: read
-      pull-requests: read   # Для того, чтобы через API читать PR
+      pull-requests: read
       
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      # Install Python + script
       - name: Install Python + create venv
         run: |
           apt-get update
@@ -41,7 +40,42 @@ jobs:
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
 
-      # Android build
+      - name: Setup environment for Checkstyle
+        run: |
+          apt-get update && apt-get install -y openjdk-17-jdk
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export PATH=$JAVA_HOME/bin:$PATH
+          cd App
+          chmod +x ./gradlew
+          export ANDROID_HOME=/opt/android-sdk
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+      
+      - name: Run Checkstyle
+        run: |
+          cd App
+          ./gradlew checkstyleMain --no-daemon --stacktrace
+      
+      - name: Upload Checkstyle report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checkstyle-report-${{ github.sha }}
+          path: App/app/build/reports/checkstyle/
+          retention-days: 7
+
+  android_build:
+    runs-on: ubuntu-latest
+    container: ghcr.io/cirruslabs/android-sdk:34
+    needs: code_quality  # Зависимость от code_quality job
+
+    permissions:
+      contents: read
+      pull-requests: read
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
       - name: Setup environment
         run: |
           apt-get update && apt-get install -y openjdk-17-jdk
@@ -71,7 +105,7 @@ jobs:
       
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
-        if: always()  # Загружаем результаты тестов даже если они упали
+        if: always()
         with:
           name: test-results-${{ github.sha }}
           path: App/app/build/reports/tests/
