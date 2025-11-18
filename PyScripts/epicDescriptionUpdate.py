@@ -123,7 +123,7 @@ def build_markdown(child_prs: List[dict]) -> str:
 def update_epic_body(api_url: str, owner: str, repo: str, epic_number: int, new_block: str):
     """
     Обновляем описание PR эпика.
-    Для простоты — полностью заменяем body.
+    Полностью заменяем body чтобы было проще.
     Можно усложнить и заменить только блок между маркерами.
     """
     url = f"{api_url}/repos/{owner}/{repo}/pulls/{epic_number}"
@@ -141,7 +141,7 @@ def update_epic_body(api_url: str, owner: str, repo: str, epic_number: int, new_
 def main():
     event_name = os.environ.get("GITHUB_EVENT_NAME")
     if event_name != "pull_request":
-        print(f"[INFO] Not a pull_request event ({event_name}), skip epic sync")
+        print(f"[!] Not a pull_request event ({event_name}), skip epic sync")
         return
 
     event = load_event()
@@ -163,22 +163,22 @@ def main():
     if head_ref.startswith("epic/"):
         epic_branch = head_ref
         epic_pr_number = pr["number"]
-        print(f"[INFO] Current PR is epic PR #{epic_pr_number} (branch {epic_branch})")
+        print(f"[!] Current PR is epic PR #{epic_pr_number} (branch {epic_branch})")
 
     # 2) Если это feature -> epic/*
     elif base_ref.startswith("epic/"):
         epic_branch = base_ref
-        print(f"[INFO] Feature PR to epic branch {epic_branch}, searching epic PR...")
+        print(f"[!] Feature PR to epic branch {epic_branch}, searching epic PR...")
 
         epic_pr = find_epic_pr(api_url, owner, repo, epic_branch)
         if not epic_pr:
-            print("[WARN] No epic PR found for this epic branch, skip")
+            print("[?] No epic PR found for this epic branch, skip")
             return
         epic_pr_number = epic_pr["number"]
-        print(f"[INFO] Found epic PR #{epic_pr_number}")
+        print(f"[?] Found epic PR #{epic_pr_number}")
 
     else:
-        print("[INFO] This PR is not epic-related, skip")
+        print("[?] This PR is not epic-related, skip")
         return
 
     # Находим все дочерние PR (feature/* -> epic/...)
