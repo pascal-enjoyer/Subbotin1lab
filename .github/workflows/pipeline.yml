@@ -37,7 +37,7 @@ jobs:
       - name: Run Checkstyle
         run: |
           cd App
-          ./gradlew checkstyleMain --no-daemon --stacktrace --continue
+          ./gradlew checkstyleAll --no-daemon --stacktrace --continue
           
       - name: Upload Checkstyle Report
         if: always()
