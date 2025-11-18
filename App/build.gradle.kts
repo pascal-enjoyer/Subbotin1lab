@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application) apply false
-    id("checkstyle") apply false  // Убрана версия
 }
 
 subprojects {
