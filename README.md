@@ -126,11 +126,23 @@
 ### Работа пайплайна 
 ![Pipeline](https://github.com/user-attachments/assets/6f1a08bf-d18b-42ef-a563-786478f5cde6)
 )
-1. android_build
-- 1
-- 2
-- 3
-- 4
-2. release_apk
+
+1. code_checks
+На этом этапе проверяется качество и корректность исходного кода перед сборкой. Также производится проверка размера МР (в скрине МР feature, поэтому ограничение в 300 строк)
+
+<img width="299" height="102" alt="image" src="https://github.com/user-attachments/assets/2802caf3-fbd2-4214-b404-3d4686d368b7" /> <br/>
+
+<img width="654" height="679" alt="image" src="https://github.com/user-attachments/assets/1bdc6e5b-7623-4032-b0d0-8af5de79bfb3" />
+
+
+https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/55712972106
+
+2. android_build
+
+<img width="335" height="95" alt="image" src="https://github.com/user-attachments/assets/14602b14-7cf7-4b68-bb40-b9007412ae6e" />
+
+
+https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/55713171708
+3. release_apk
 
 
