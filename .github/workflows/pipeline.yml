@@ -2,10 +2,10 @@ name: Android Build
 
 on:
   push:
-    branches: [ feature_vlad ]
+    branches: [ main, dev ]
     tags: [ 'v*', '*-test' ]
   pull_request:
-    branches: [ dev ]
+    branches: [ main, dev ]
     types: [opened, synchronize, reopened]
 
 env:
@@ -16,7 +16,7 @@ jobs:
   # STAGE 1: Python скрипты (CI-проверки) 
   code_checks:
     runs-on: ubuntu-latest
-
+    container: ghcr.io/cirruslabs/android-sdk:34
     permissions:
       contents: write
       pull-requests: write  # для чтения/обновления PR через API
@@ -37,14 +37,14 @@ jobs:
           . venv/bin/activate
           pip install --upgrade pip
           pip install requests
-
+          
       - name: Run GitHub checks (members + PR size)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
-
+          
       - name: Update epic description
         if: github.event_name == 'pull_request'
         env:
