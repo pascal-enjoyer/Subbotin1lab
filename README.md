@@ -141,17 +141,21 @@ https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/5571
 
 <img width="335" height="95" alt="image" src="https://github.com/user-attachments/assets/14602b14-7cf7-4b68-bb40-b9007412ae6e" />
 
-
 https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/55713171708
+
 3. Stage 3 - прогон тестов в проекте
 
 <img width="618" height="738" alt="image" src="https://github.com/user-attachments/assets/1dcc65f2-611e-48eb-8dfe-e19126edd22b" />
+
+https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/55713522632
 
 4. Stage 4 - публикация сборки
 
 <img width="802" height="288" alt="image" src="https://github.com/user-attachments/assets/8140cb95-8ecd-4ec6-b4d0-4be6caff3dda" />
 
 <img width="990" height="472" alt="image" src="https://github.com/user-attachments/assets/01e9681e-e9eb-4c25-86d9-51f585fc27a4" />
+
+https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/55713522671
 
 5. для оценки  3 - перечислить и вывести в консоль всех участников команды и их группы.
 
