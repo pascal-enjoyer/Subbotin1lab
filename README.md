@@ -169,4 +169,22 @@ https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/5571
 
 <img width="472" height="103" alt="image" src="https://github.com/user-attachments/assets/7ca4b984-7c63-4713-a777-7790448b84d6" />
 
-7. 
+7. Для оценки 5 - организовать работу с эпиками
+
+![Структура веток](https://github.com/user-attachments/assets/529b9897-44f4-49d0-8087-dd59a5472999)
+
+- Созданы 3 Pull Request:
+  - PR из эпик-ветки → `main`;
+  - PR из двух веток подзадач → `epic/big_task`.
+
+<img width="989" height="213" alt="image" src="https://github.com/user-attachments/assets/75003470-b4e3-4d6c-870c-d2bec9936404" />
+
+- Оба PR из веток подзадач успешно выполнились.
+
+<img width="1280" height="790" alt="image" src="https://github.com/user-attachments/assets/03b9bfcb-c9ef-4858-8c47-3318a14db148" />
+<img width="993" height="976" alt="image" src="https://github.com/user-attachments/assets/9d1b4137-fa47-432d-920d-271a9c1c4eed" />
+<img width="1000" height="1106" alt="image" src="https://github.com/user-attachments/assets/c0b2da51-f385-47c6-8d35-588cb2563fca" />
+
+- Описание PR эпика в `main` обновилось автоматически.
+
+<img width="1002" height="797" alt="image" src="https://github.com/user-attachments/assets/237fb4f7-9a00-4edc-be02-8933318a7696" />
