@@ -127,7 +127,7 @@
 ![Pipeline](https://github.com/user-attachments/assets/6f1a08bf-d18b-42ef-a563-786478f5cde6)
 )
 
-1. code_checks
+1. Stage 1 - проверка код стайла (чекстаил детект)
 На этом этапе проверяется качество и корректность исходного кода перед сборкой. Также производится проверка размера МР (в скрине МР feature, поэтому ограничение в 300 строк)
 
 <img width="299" height="102" alt="image" src="https://github.com/user-attachments/assets/2802caf3-fbd2-4214-b404-3d4686d368b7" /> <br/>
@@ -137,12 +137,32 @@
 
 https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/55712972106
 
-2. android_build
+2. Stage 2 - билд проекта (должен проявлять артефакт - 1 день время жизни)
 
 <img width="335" height="95" alt="image" src="https://github.com/user-attachments/assets/14602b14-7cf7-4b68-bb40-b9007412ae6e" />
 
 
 https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/55713171708
-3. release_apk
+3. Stage 3 - прогон тестов в проекте
 
+<img width="618" height="738" alt="image" src="https://github.com/user-attachments/assets/1dcc65f2-611e-48eb-8dfe-e19126edd22b" />
 
+4. Stage 4 - публикация сборки
+
+<img width="802" height="288" alt="image" src="https://github.com/user-attachments/assets/8140cb95-8ecd-4ec6-b4d0-4be6caff3dda" />
+
+<img width="990" height="472" alt="image" src="https://github.com/user-attachments/assets/01e9681e-e9eb-4c25-86d9-51f585fc27a4" />
+
+5. для оценки  3 - перечислить и вывести в консоль всех участников команды и их группы.
+
+<img width="446" height="190" alt="image" src="https://github.com/user-attachments/assets/951f54bd-5bb3-4e8f-a793-e4515a60251a" />
+
+6. для оценки 4 - проверка размера МР (если больше 300 строк падать с ошибкой, если меньше проходить успешно - это для МР feature, если МР refactor - то тогда 400 строк разрешено, если bugfix - то 150)
+
+<img width="622" height="369" alt="image" src="https://github.com/user-attachments/assets/4581cdb2-7b0b-4ec2-9ad4-3488a8803293" />
+
+<img width="470" height="285" alt="image" src="https://github.com/user-attachments/assets/a4c97809-77d1-4a45-af15-f4ee252ad3ad" />
+
+<img width="472" height="103" alt="image" src="https://github.com/user-attachments/assets/7ca4b984-7c63-4713-a777-7790448b84d6" />
+
+7. 
