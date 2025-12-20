@@ -76,6 +76,7 @@ jobs:
         run: |
           . venv/bin/activate
           python PyScripts/epicDescriptionUpdate.py
+
   # STAGE 2: Сборка
   android_build:
     runs-on: ubuntu-latest
@@ -95,10 +96,12 @@ jobs:
           chmod +x ./gradlew
           export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
+
       - name: Build APK
         run: |
           cd App
           ./gradlew assembleDebug --no-daemon --stacktrace
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
@@ -125,10 +128,12 @@ jobs:
           chmod +x ./gradlew
           export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
+
       - name: Run Tests
         run: |
           cd App
           ./gradlew test --no-daemon --stacktrace
+
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()  # загружаем результаты тестов даже если они упали
@@ -145,6 +150,7 @@ jobs:
     if: |
       startsWith(github.ref, 'refs/tags/') && 
       (contains(github.ref, '-test') || contains(github.ref, 'refs/tags/v'))
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -161,7 +167,9 @@ jobs:
           name: Release ${{ github.ref_name }}
           body: |
             ### Сборка от ${{ github.sha }}
+
             **APK: [app-debug.apk](app-debug.apk)
+
             Собрано: ${{ github.event.head_commit.timestamp }}  
             Ветка: ${{ github.ref_name }}  
             Коммит: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
