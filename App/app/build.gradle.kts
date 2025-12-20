@@ -44,6 +44,15 @@ android {
     }
 }
 
+checkstyle {
+    toolVersion = "10.3"
+    configFile = file("checkstyle.xml")
+}
+
+tasks.register("checkstyleAll") {
+    dependsOn("checkstyleMain")
+}
+
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
