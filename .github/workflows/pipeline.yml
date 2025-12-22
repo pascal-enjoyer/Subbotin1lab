@@ -6,20 +6,19 @@ on:
     tags: [ 'v*', '*-test' ]
   pull_request:
     branches: [ main, dev ]
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 
 env:
   ANDROID_HOME: /opt/android-sdk
   JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
 jobs:
-  # STAGE 1: Python скрипты (CI-проверки) 
   code_checks:
     runs-on: ubuntu-latest
     container: ghcr.io/cirruslabs/android-sdk:34
     permissions:
       contents: write
-      pull-requests: write  # для чтения/обновления PR через API
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -33,12 +32,12 @@ jobs:
           chmod +x ./gradlew
           export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
-          
+
       - name: Run Checkstyle
         run: |
           cd App
           ./gradlew checkstyleAll --no-daemon --stacktrace --continue
-          
+
       - name: Upload Checkstyle Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -49,26 +48,26 @@ jobs:
             App/app/build/reports/checkstyle/*.html
             App/app/build/reports/checkstyle/*.xml
           retention-days: 7
-          
+
       - name: Install Python venv package
         run: |
           apt-get update
           apt-get install -y python3-venv
-          
+
       - name: Install Python + create venv
         run: |
           python3 -m venv venv
           . venv/bin/activate
           pip install --upgrade pip
           pip install requests
-          
+
       - name: Run GitHub checks (members + PR size)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           . venv/bin/activate
           python PyScripts/pyChecks_CI.py
-          
+
       - name: Update epic description
         if: github.event_name == 'pull_request'
         env:
@@ -77,10 +76,9 @@ jobs:
           . venv/bin/activate
           python PyScripts/epicDescriptionUpdate.py
 
-  # STAGE 2: Сборка
   android_build:
     runs-on: ubuntu-latest
-    needs: code_checks          # <-- зависит от Stage 1
+    needs: code_checks
     container: ghcr.io/cirruslabs/android-sdk:34
 
     steps:
@@ -109,10 +107,9 @@ jobs:
           path: App/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 1
 
-  # STAGE 3: Unit-тесты
-  android_tests:
+  android_unit_tests:
     runs-on: ubuntu-latest
-    needs: android_build          # <-- зависит от Stage 2
+    needs: android_build
     container: ghcr.io/cirruslabs/android-sdk:34
 
     steps:
@@ -129,26 +126,68 @@ jobs:
           export ANDROID_HOME=/opt/android-sdk
           echo "sdk.dir=$ANDROID_HOME" > local.properties
 
-      - name: Run Tests
+      - name: Run Unit Tests (JVM)
         run: |
           cd App
-          ./gradlew test --no-daemon --stacktrace
+          ./gradlew testDebugUnitTest --no-daemon --stacktrace
 
-      - name: Upload Test Results
+      - name: Upload Unit Test Results
         uses: actions/upload-artifact@v4
-        if: always()  # загружаем результаты тестов даже если они упали
+        if: always()
         with:
-          name: test-results-${{ github.sha }}
-          path: App/app/build/reports/tests/
-          retention-days: 7      
+          name: unit-test-results-${{ github.sha }}
+          path: |
+            App/app/build/reports/tests/
+            App/app/build/test-results/
+          retention-days: 7
 
-  # STAGE 4: Release по тэгу
+  android_instrumented_tests:
+    runs-on: ubuntu-latest
+    needs: android_build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Run instrumented tests (UI + integration) on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: |
+            cd App
+            chmod +x ./gradlew
+            echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+            ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
+
+      - name: Upload AndroidTest Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: androidTest-results-${{ github.sha }}
+          path: |
+            App/app/build/reports/androidTests/
+            App/app/build/outputs/androidTest-results/
+          retention-days: 7
+
   release_apk:
     runs-on: ubuntu-latest
-    needs: android_build          # <-- зависит ТОЛЬКО от сборки, не от тестов
+    needs: android_build
 
     if: |
-      startsWith(github.ref, 'refs/tags/') && 
+      startsWith(github.ref, 'refs/tags/') &&
       (contains(github.ref, '-test') || contains(github.ref, 'refs/tags/v'))
 
     steps:
@@ -170,8 +209,8 @@ jobs:
 
             **APK: [app-debug.apk](app-debug.apk)
 
-            Собрано: ${{ github.event.head_commit.timestamp }}  
-            Ветка: ${{ github.ref_name }}  
+            Собрано: ${{ github.event.head_commit.timestamp }}
+            Ветка: ${{ github.ref_name }}
             Коммит: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
           files: app-debug.apk
           draft: false
