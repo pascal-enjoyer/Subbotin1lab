@@ -177,18 +177,12 @@ jobs:
             adb start-server
             adb devices
           script: |
+            set -euxo pipefail
             cd App
+            ls -la
             chmod +x ./gradlew
-            echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-
-            # переподключаемся на всякий случай
-            adb kill-server || true
-            adb start-server
-            adb devices
-            adb wait-for-device
-
+            echo "sdk.dir=${ANDROID_SDK_ROOT:-$ANDROID_HOME}" > local.properties
             ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
-
 
       - name: Upload AndroidTest Results
         if: always()
@@ -237,7 +231,6 @@ jobs:
             adb start-server
             adb devices
 
-            adb wait-for-device
             until adb shell getprop sys.boot_completed | grep -m 1 "1"; do
               echo "Waiting for emulator to boot..."
               sleep 5
