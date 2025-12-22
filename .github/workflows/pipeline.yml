@@ -142,7 +142,8 @@ jobs:
           retention-days: 7
           
   android_instrumented_tests_macos:
-    runs-on: macos-13
+    runs-on: macos-15-intel
+
     needs: android_build
 
     steps:
