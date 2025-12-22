@@ -182,6 +182,7 @@ jobs:
             App/app/build/outputs/androidTest-results/
           retention-days: 7
 
+      
   release_apk:
     runs-on: ubuntu-latest
     needs: android_build
