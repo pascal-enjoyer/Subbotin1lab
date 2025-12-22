@@ -198,6 +198,44 @@ https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/5571
 <details>
 <summary><strong> Отчёт о выполнении лабораторной работы №2 </strong></summary>
 
+Agile. Создать GitHub Project, привязать к репозиторию. Настроить статусы, приоритеты и трекеры задач. Создать и выполнить несколько задач, привязать к коммитам и пулл реквестам.
+
+В процессе работы был создан Project Subbotin2Lab. Привязан к репозиторию, в котором выполнялась первая лабораторная работа.
+
+<img width="838" height="553" alt="image" src="https://github.com/user-attachments/assets/d2b09ce3-4570-45ad-a53c-113655e64e2b" />
+
+Были использованы кастомные поля. Они позволяют дополнять задачи полезной информацией, такой как приоритет, статус, даты начала и окончания и т.д.
+
+<img width="242" height="327" alt="image" src="https://github.com/user-attachments/assets/bfa43872-5a03-4766-aaf4-9b33f14fbb12" />
+
+Также GitHub Project поддерживает Workflow. Workflow в GitHub Projects нужен для описания и управления жизненным циклом задач в проекте.
+- определяет последовательность этапов выполнения задачи (To Do → In Progress → Review → Done);
+- помогает отслеживать текущее состояние задач;
+- обеспечивает единый порядок работы для всей команды;
+- упрощает контроль прогресса и сроков выполнения;
+- повышает прозрачность процесса разработки.
+
+Один из Workflows - выставляет задаче статус Done при MR.
+
+<img width="1906" height="485" alt="image" src="https://github.com/user-attachments/assets/a335e27f-1942-4b29-b8c2-3fb7532a0ca3" />
+
+Общий процесс выполнения задач командой:
+
+<img width="1919" height="918" alt="Снимок экрана 2025-12-20 221312" src="https://github.com/user-attachments/assets/07537ccf-2256-478a-973c-1d7bd6f99af4" />
+
+<img width="1919" height="920" alt="Снимок экрана 2025-12-20 225611" src="https://github.com/user-attachments/assets/7f4f81ed-4493-4cca-88e4-eed2c355063a" />
+
+<img width="874" height="861" alt="image" src="https://github.com/user-attachments/assets/aca1d50b-bafb-437a-85ce-c05d6a046613" />
+
+
+Бреднев Максим
+* Создал задачу, выставил приоритет, размер и даты начала и окончания задачи.
+* Перенес задачу в In Progress.
+* Создал ветку для задачи.
+* Выполнил изменения в ветке, сделал коммит с упоминанием задачи по #.
+* Выполнил PR и MR с упоминанием задачи, Workflow подхватил задачу и автоматически поменял ей статус на Done.
+
+<img width="1006" height="864" alt="image" src="https://github.com/user-attachments/assets/cc1a03f7-92c3-41d8-b8b4-465cc46b288d" />
 
 
 </details>
@@ -211,15 +249,18 @@ https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/5571
 Бреднев Максим.
 
 BigUnitMorseTranslatorTest (unit): проверяет корректность кодирования текста в Морзе (регистр, рус/англ буквы, цифры, знаки, пробелы, неизвестные символы), корректность декодирования в зависимости от языка, а также “сквозной” перевод фраз текст → Морзе → текст и устойчивость к лишним пробелам// в морзе-строке.
+
 <img width="704" height="620" alt="image" src="https://github.com/user-attachments/assets/16b63939-396f-4da8-a796-4a9874a59925" />
 <img width="1798" height="553" alt="image" src="https://github.com/user-attachments/assets/ee514c07-3ba2-4ba8-8dec-6c27cfc215a1" />
 
 
 IntegrationRoundTripTest (интеграционный): проверяет полный сценарий перевода HELLO WORLD → Морзе → HELLO WORLD, то есть совместную работу encode/decode и разделение слов через /.
+
 <img width="963" height="376" alt="image" src="https://github.com/user-attachments/assets/2dc1a613-71a5-4716-95b8-f37ba4b78cbe" />
 <img width="1317" height="542" alt="image" src="https://github.com/user-attachments/assets/833c579b-59b2-4321-8c80-3de6199a6c9b" />
 
 MainActivityEspressoTest (UI/Espresso): проверяет поведение интерфейса: ввод “SOS” автоматически даёт “… --- …”, затем после переключения режима появляется выбор языка и ввод морзе-кода декодируется обратно в “SOS”.
+
 <img width="765" height="729" alt="image" src="https://github.com/user-attachments/assets/dc624fc0-95ef-46f9-a525-34c9c1d46872" />
 <img width="1798" height="561" alt="image" src="https://github.com/user-attachments/assets/626c124a-52bd-40c8-ac59-3ec5b287bce7" />
 
