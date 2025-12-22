@@ -157,24 +157,38 @@ jobs:
 
       - uses: android-actions/setup-android@v3
 
-      - name: Run instrumented tests on emulator (Intel macOS)
+      - name: Run instrumented tests on emulator (macOS Intel)
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: 33
           target: google_apis
           arch: x86_64
           disable-animations: true
           emulator-boot-timeout: 900
+          # не фиксировать emulator-port, пусть выберет сам
           emulator-options: >
-            -no-window -no-audio -no-snapshot -no-boot-anim
+            -no-window
+            -no-audio
+            -no-snapshot
+            -no-boot-anim
+            -gpu swiftshader_indirect
+          pre-emulator-launch-script: |
+            adb kill-server || true
+            adb start-server
+            adb devices
           script: |
             cd App
             chmod +x ./gradlew
             echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
+            # переподключаемся на всякий случай
             adb kill-server || true
             adb start-server
             adb devices
+            adb wait-for-device
+
             ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
+
 
       - name: Upload AndroidTest Results
         if: always()
