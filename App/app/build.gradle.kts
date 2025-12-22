@@ -47,6 +47,8 @@ android {
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.espresso.contrib)
+    implementation(libs.ext.junit)
 
     testImplementation("junit:junit:4.13.2")
 
