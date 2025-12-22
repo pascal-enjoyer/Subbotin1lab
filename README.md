@@ -8,8 +8,9 @@
 - Лихачев Данил Алексеевич  
 
 ---
+<details>
+<summary><strong> Отчёт о выполнении лабораторной работы №1 </strong></summary>
 
-## Отчёт о выполнении работы
 
 В качестве основы был взят проект Android-приложения для перевода текста в азбуку Морзе и обратно.
 
@@ -188,3 +189,47 @@ https://github.com/pascal-enjoyer/Subbotin1lab/actions/runs/19469596769/job/5571
 - Описание PR эпика в `main` обновилось автоматически.
 
 <img width="1002" height="797" alt="image" src="https://github.com/user-attachments/assets/237fb4f7-9a00-4edc-be02-8933318a7696" />
+
+
+</details>
+
+
+
+<details>
+<summary><strong> Отчёт о выполнении лабораторной работы №2 </strong></summary>
+
+
+
+</details>
+
+
+<details>
+<summary><strong> Отчёт о выполнении лабораторной работы №3 </strong></summary>
+
+В рамках работы каждый из участников разработал по одному ui, unit и интеграционному тесту, все они выполняются во время пайплайна.
+
+Бреднев Максим.
+
+BigUnitMorseTranslatorTest (unit): проверяет корректность кодирования текста в Морзе (регистр, рус/англ буквы, цифры, знаки, пробелы, неизвестные символы), корректность декодирования в зависимости от языка, а также “сквозной” перевод фраз текст → Морзе → текст и устойчивость к лишним пробелам// в морзе-строке.
+<img width="704" height="620" alt="image" src="https://github.com/user-attachments/assets/16b63939-396f-4da8-a796-4a9874a59925" />
+<img width="1798" height="553" alt="image" src="https://github.com/user-attachments/assets/ee514c07-3ba2-4ba8-8dec-6c27cfc215a1" />
+
+
+IntegrationRoundTripTest (интеграционный): проверяет полный сценарий перевода HELLO WORLD → Морзе → HELLO WORLD, то есть совместную работу encode/decode и разделение слов через /.
+<img width="963" height="376" alt="image" src="https://github.com/user-attachments/assets/2dc1a613-71a5-4716-95b8-f37ba4b78cbe" />
+<img width="1317" height="542" alt="image" src="https://github.com/user-attachments/assets/833c579b-59b2-4321-8c80-3de6199a6c9b" />
+
+MainActivityEspressoTest (UI/Espresso): проверяет поведение интерфейса: ввод “SOS” автоматически даёт “… --- …”, затем после переключения режима появляется выбор языка и ввод морзе-кода декодируется обратно в “SOS”.
+<img width="765" height="729" alt="image" src="https://github.com/user-attachments/assets/dc624fc0-95ef-46f9-a525-34c9c1d46872" />
+<img width="1798" height="561" alt="image" src="https://github.com/user-attachments/assets/626c124a-52bd-40c8-ac59-3ec5b287bce7" />
+
+</details>
+
+
+
+<details>
+<summary><strong> Отчёт о выполнении лабораторной работы №4 </strong></summary>
+
+
+
+</details>
