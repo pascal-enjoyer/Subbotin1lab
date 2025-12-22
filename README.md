@@ -289,6 +289,34 @@ MainActivityEspressoTest (UI/Espresso): проверяет поведение и
 <img width="765" height="729" alt="image" src="https://github.com/user-attachments/assets/dc624fc0-95ef-46f9-a525-34c9c1d46872" />
 <img width="1798" height="561" alt="image" src="https://github.com/user-attachments/assets/626c124a-52bd-40c8-ac59-3ec5b287bce7" />
 
+Батин Владислав
+
+
+
+
+Лихачев Данил
+
+EdgeCasesMorseTest — юнит-тесты граничных случаев: проверяют обработку пустого ввода и строки из пробелов, нечувствительность к регистру, игнорирование неизвестных символов при кодировании, поведение при невалидном морзе, одинаковое декодирование цифр/пунктуации для en и ru, и “круговой” перевод текста с пунктуацией/множественными пробелами.
+
+<img width="712" height="848" alt="image" src="https://github.com/user-attachments/assets/5a4d4cfb-c4a9-480d-9275-cd9c512a244e" />
+<img width="1272" height="506" alt="image" src="https://github.com/user-attachments/assets/ef780547-fba8-4a27-9138-54dc32d35102" />
+
+LanguageIntegrationTest — интеграционные инструментальные тесты: проверяют корректность перевода/обратного перевода при переключении языка (en/ru), работу смешанных символов (цифры/пунктуация) в обоих языках, а также имитируют сохранение выбранного языка через SharedPreferences и использование этого значения при декодировании.
+
+<img width="1033" height="621" alt="image" src="https://github.com/user-attachments/assets/38f5adb7-95ad-41bf-b31b-f869562db017" />
+<img width="1378" height="342" alt="image" src="https://github.com/user-attachments/assets/204c245d-d976-443f-b774-b6a8971629d7" />
+
+UITranslationFlowTest — UI (Espresso) тесты: проверяют основные пользовательские сценарии в приложении — автоперевод при вводе, переключение режимов Text→Morse и Morse→Text, выбор языка через Spinner, обработку некорректного ввода, работу на длинном тексте и видимость/активность кнопок и элементов интерфейса.
+
+<img width="1026" height="632" alt="image" src="https://github.com/user-attachments/assets/2b21f6a6-615c-4654-a5ab-9f7e42f4c464" />
+<img width="1556" height="385" alt="image" src="https://github.com/user-attachments/assets/d623e600-d679-4781-a2ff-b0c08b31c8dd" />
+
+
+Баженов Тимофей
+
+
+
+
 </details>
 
 
