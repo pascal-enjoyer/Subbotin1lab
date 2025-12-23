@@ -329,13 +329,27 @@ MorseIntegrationTest (UI/Espresso): проверяет полный пользо
 <img width="974" height="188" alt="image" src="https://github.com/user-attachments/assets/f75415cf-ac13-4cba-b3df-e0377b93f718" />
 <img width="974" height="683" alt="image" src="https://github.com/user-attachments/assets/3f768d7b-8e63-4952-9e37-120a2e3b3260" />
 
+Выполнение тестов в пайплайне:
+
+<img width="1872" height="849" alt="image" src="https://github.com/user-attachments/assets/ed79fce0-baf8-4268-a1a0-3a76f843194b" />
+
+<img width="1482" height="769" alt="image" src="https://github.com/user-attachments/assets/cdf2ae74-d1c6-4c53-9784-d3569192d4e3" />
+
+
+
 </details>
+
 
 
 
 <details>
 <summary><strong> Отчёт о выполнении лабораторной работы №4 </strong></summary>
 
+В проект добавлен swagger. В проекте Swagger работает как локальная интерактивная документация и тестовый API. При запуске приложения автоматически открывается экран SwaggerActivity, который запускает локальный HTTP-сервер на адресе 127.0.0.1:8080 и отображает Swagger UI в WebView. Swagger загружает описание API и показывает доступные эндпоинты. Когда пользователь нажимает «Try it out», отправляется запрос. Результат выполнения возвращается обратно в Swagger UI и отображается пользователю.
+
+<img width="401" height="889" alt="image" src="https://github.com/user-attachments/assets/8e1f8878-4c96-4109-94b8-9b4af630a4ae" />
+
+<img width="428" height="899" alt="image" src="https://github.com/user-attachments/assets/426d303c-519a-428c-8e89-f1a68a8fae40" />
 
 
 </details>
