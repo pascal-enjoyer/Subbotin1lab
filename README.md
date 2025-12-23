@@ -345,6 +345,11 @@ MorseIntegrationTest (UI/Espresso): проверяет полный пользо
 <details>
 <summary><strong> Отчёт о выполнении лабораторной работы №4 </strong></summary>
 
+В проект добавлен swagger. В проекте Swagger работает как локальная интерактивная документация и тестовый API. При запуске приложения автоматически открывается экран SwaggerActivity, который запускает локальный HTTP-сервер на адресе 127.0.0.1:8080 и отображает Swagger UI в WebView. Swagger загружает описание API и показывает доступные эндпоинты. Когда пользователь нажимает «Try it out», отправляется запрос. Результат выполнения возвращается обратно в Swagger UI и отображается пользователю.
+
+<img width="401" height="889" alt="image" src="https://github.com/user-attachments/assets/8e1f8878-4c96-4109-94b8-9b4af630a4ae" />
+
+<img width="428" height="899" alt="image" src="https://github.com/user-attachments/assets/426d303c-519a-428c-8e89-f1a68a8fae40" />
 
 
 </details>
