@@ -159,6 +159,19 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Free disk space
+        run: |
+          df -h
+          sudo rm -rf /usr/local/lib/android/sdk/ndk || true
+          sudo rm -rf /usr/local/lib/android/sdk/cmake || true
+          sudo rm -rf /usr/share/dotnet || true
+          sudo rm -rf /opt/ghc || true
+          sudo rm -rf /usr/local/share/boost || true
+          sudo rm -rf /usr/local/share/powershell || true
+          sudo rm -rf /usr/local/.ghcup || true
+          sudo rm -rf /home/runner/.cache || true
+          df -h
+
       - name: Enable KVM
         run: |
           sudo apt-get update
@@ -177,16 +190,16 @@ jobs:
           emulator-options: >
             -no-window -no-audio -no-snapshot -no-boot-anim
             -gpu swiftshader_indirect
+            -no-metrics
+            -wipe-data
           script: |
             set -euxo pipefail
             cd App
             chmod +x ./gradlew
             echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-
             adb kill-server || true
             adb start-server
             adb devices
-
             ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
 
       - name: Upload AndroidTest Results
@@ -198,7 +211,7 @@ jobs:
             App/app/build/reports/androidTests/
             App/app/build/outputs/androidTest-results/
           retention-days: 7
-
+          
   release_apk:
     runs-on: ubuntu-latest
     needs: android_build
