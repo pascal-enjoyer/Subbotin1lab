@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
                 currentLanguage = "en";
             }
+
         });
 
         updateUI();
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 // не нужно
             }
+
         });
         
         // Обработчик для кнопки переключения режима
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 translateFromMorse();
             }
         });
+        startActivity(new android.content.Intent(this, SwaggerActivity.class));
     }
 
     private void updateUI() {

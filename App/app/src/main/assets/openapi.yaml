@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: Local Swagger API (Android)
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:8080
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+
+  /translate:
+    post:
+      summary: Translate text (demo endpoint inside app)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+      responses:
+        "200":
+          description: Translation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
