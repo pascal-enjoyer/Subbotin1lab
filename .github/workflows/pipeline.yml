@@ -193,14 +193,16 @@ jobs:
             -no-metrics
             -wipe-data
           script: |
-            set -euxo pipefail
-            cd App
-            chmod +x ./gradlew
-            echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-            adb kill-server || true
-            adb start-server
-            adb devices
-            ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
+            bash -lc '
+              set -euxo pipefail
+              cd App
+              chmod +x ./gradlew
+              echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+              adb kill-server || true
+              adb start-server
+              adb devices
+              ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
+            '
 
       - name: Upload AndroidTest Results
         if: always()
@@ -211,7 +213,7 @@ jobs:
             App/app/build/reports/androidTests/
             App/app/build/outputs/androidTest-results/
           retention-days: 7
-          
+
   release_apk:
     runs-on: ubuntu-latest
     needs: android_build
