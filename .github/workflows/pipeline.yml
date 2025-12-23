@@ -201,16 +201,7 @@ jobs:
             -no-metrics
             -wipe-data
           script: |
-            ls -la
-            ls -la App || true
-            ls -la App/gradlew || true
-            cd App
-            chmod +x ./gradlew
-            echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-            adb kill-server || true
-            adb start-server
-            adb devices
-            ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
+            cd App && chmod +x ./gradlew && echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties && ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
 
       - name: Upload AndroidTest Results
         if: always()
