@@ -329,7 +329,16 @@ MorseIntegrationTest (UI/Espresso): проверяет полный пользо
 <img width="974" height="188" alt="image" src="https://github.com/user-attachments/assets/f75415cf-ac13-4cba-b3df-e0377b93f718" />
 <img width="974" height="683" alt="image" src="https://github.com/user-attachments/assets/3f768d7b-8e63-4952-9e37-120a2e3b3260" />
 
+Выполнение тестов в пайплайне:
+
+<img width="1872" height="849" alt="image" src="https://github.com/user-attachments/assets/ed79fce0-baf8-4268-a1a0-3a76f843194b" />
+
+<img width="1482" height="769" alt="image" src="https://github.com/user-attachments/assets/cdf2ae74-d1c6-4c53-9784-d3569192d4e3" />
+
+
+
 </details>
+
 
 
 
